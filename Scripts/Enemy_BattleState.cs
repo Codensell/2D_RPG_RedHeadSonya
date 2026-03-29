@@ -13,8 +13,11 @@ public class Enemy_BattleState : EnemyState
     {
         base.Enter();
 
-        if(player == null)
-            player = enemy.PlayerDetection().transform;
+        UpdateBattleTimer();
+        
+        if (player == null)
+            player = enemy.GetPlayerReference();
+        
         if (ShouldRetreat())
         {
             rb.linearVelocity = new Vector2(enemy.retreatVelocity.x * -DirectionToPlayer(), enemy.retreatVelocity.y);
