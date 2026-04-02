@@ -9,7 +9,7 @@ public class EntityStats : MonoBehaviour
     public StatOffenceGroup offence;
     public StatDefenceGroup defence;
 
-    public float GetElementalDamage()
+    public float GetElementalDamage(out ElementalType elemental)
     {
         float fireDamage = offence.fireDamage.GetValue();
         float iceDamage = offence.iceDamage.GetValue();
@@ -17,13 +17,24 @@ public class EntityStats : MonoBehaviour
         float bonusElementalDamage = major.intelligence.GetValue();
 
         float highestDamage = fireDamage;
+        elemental = ElementalType.Fire;
         
         if(iceDamage > highestDamage)
+        {
             highestDamage = iceDamage;
+            elemental = ElementalType.Ice;
+        }
         if(lightningDamage > highestDamage)
+        {
             highestDamage = lightningDamage;
+            elemental = ElementalType.Lightning;
+        }
 
-        if (highestDamage <= 0) return 0;
+        if (highestDamage <= 0)
+        {
+            elemental = ElementalType.None;
+            return 0;
+        }
 
         float bonusFire = (fireDamage == highestDamage) ? 0 : fireDamage * 0.5f;
         float bonusIce = (iceDamage == highestDamage) ? 0 : iceDamage * 0.5f;
@@ -34,6 +45,30 @@ public class EntityStats : MonoBehaviour
         float finalDamage = highestDamage + weakerElementalDamage + bonusElementalDamage;
 
         return finalDamage;
+    }
+
+    public float GetElementalResistance(ElementalType elemental)
+    {
+        float baseResistance = 0;
+        float bonusResistance = major.intelligence.GetValue() * .5f;
+
+        switch (elemental)
+        {
+            case ElementalType.Fire:
+                baseResistance = defence.fireRes.GetValue();
+                break;
+            case ElementalType.Ice:
+                baseResistance = defence.iceRes.GetValue();
+                break;
+            case ElementalType.Lightning:
+                baseResistance = defence.lightningRes.GetValue();
+                break;
+        }
+        float resistance = baseResistance + bonusResistance;
+        float resistanceCap = 75f;
+        float finalResistance = Math.Clamp(resistance, 0, resistanceCap) / 100;
+        
+        return finalResistance;
     }
 
     public float GetPhysicalDamage(out bool isCrit)
