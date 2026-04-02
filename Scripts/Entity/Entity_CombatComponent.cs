@@ -24,8 +24,9 @@ public class Entity_CombatComponent : MonoBehaviour
 
             if (damagable == null) continue;
 
+            float elementalDamage = stat.GetElementalDamage();
             float damage = stat.GetPhysicalDamage(out bool isCrit);
-            bool targetGotHit = damagable.TakeDamage(damage, transform);
+            bool targetGotHit = damagable.TakeDamage(damage, elementalDamage, transform);
             if (targetGotHit)
             {
                 vfx.CreateOnHitVFX(target.transform, isCrit);

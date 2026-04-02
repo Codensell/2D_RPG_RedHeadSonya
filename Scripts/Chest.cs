@@ -8,7 +8,7 @@ public class Chest : MonoBehaviour, IDamagable
 
     [Header("Chest details")] 
     [SerializeField] private Vector2 knockUp;
-    public bool TakeDamage(float damage, Transform damageDealer)
+    public bool TakeDamage(float damage,float elementalDamage, Transform damageDealer)
     {
         vfx.PlayOnDamageVfx();
         anim.SetBool("chestOpened", true);

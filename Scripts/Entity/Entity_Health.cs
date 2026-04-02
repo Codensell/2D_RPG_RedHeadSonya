@@ -30,7 +30,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
         currentHp = entityStats.GetMaxHealth();
         UpdateHealthBar();
     }
-    public virtual bool TakeDamage(float damage, Transform damageDealer)
+    public virtual bool TakeDamage(float damage, float elementalDamage, Transform damageDealer)
     {
         if (isDead)
             return false;
