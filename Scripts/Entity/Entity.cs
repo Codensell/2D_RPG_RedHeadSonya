@@ -23,8 +23,9 @@ public class Entity : MonoBehaviour
     public bool isGround { get; private set; }
     public bool isWall { get; private set; }
 
-    private bool isKnocked;
-    private Coroutine knockbackCo;
+    private bool _isKnocked;
+    private Coroutine _knockbackCo;
+    private Coroutine _slowDownCo;
 
     protected virtual void Awake()
     {
@@ -55,28 +56,40 @@ public class Entity : MonoBehaviour
         
     }
 
-public void ReceiveKnockback(Vector2 knockback, float duration)
+    public virtual void SlowDownEntityBy(float duration, float slowMultiplier)
     {
-        if(knockbackCo != null)
-            StopCoroutine(knockbackCo);
+        if(_slowDownCo != null)StopCoroutine(_slowDownCo);
         
-        knockbackCo = StartCoroutine(KnockbackCo(knockback, duration));
+        _slowDownCo = StartCoroutine(SlowDownEntityCo(duration, slowMultiplier));
+    }
+
+    protected virtual IEnumerator SlowDownEntityCo(float duration, float slowMultiplier)
+    {
+        yield return null;
+    }
+
+    public void ReceiveKnockback(Vector2 knockback, float duration)
+    {
+        if(_knockbackCo != null)
+            StopCoroutine(_knockbackCo);
+        
+        _knockbackCo = StartCoroutine(KnockbackCo(knockback, duration));
     }
 
     private IEnumerator KnockbackCo(Vector2 knockback, float duration)
     {
-        isKnocked = true;
+        _isKnocked = true;
         rb.linearVelocity = knockback;
         
         yield return new WaitForSeconds(duration);
         
         rb.linearVelocity = Vector2.zero;
-        isKnocked = false;
+        _isKnocked = false;
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
     {
-        if (isKnocked)
+        if (_isKnocked)
             return;
         
         rb.linearVelocity = new Vector2(xVelocity, yVelocity);
