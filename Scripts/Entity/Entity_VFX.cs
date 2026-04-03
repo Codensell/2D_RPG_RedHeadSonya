@@ -19,6 +19,7 @@ public class Entity_VFX : MonoBehaviour
     
     [Header("Elemental Colors")]
     [SerializeField] private Color chillVfx = Color.cyan;
+    [SerializeField] private Color burnVfx = Color.red;
     private Color _originalHitVfxColor;
     
     private void Awake()
@@ -32,6 +33,7 @@ public class Entity_VFX : MonoBehaviour
     public void PlayOnStatusVfx(float duration, ElementalType elemental)
     {
         if(elemental == ElementalType.Ice)StartCoroutine(PlayStatusVfxCo(duration, chillVfx));
+        if(elemental == ElementalType.Fire)StartCoroutine(PlayStatusVfxCo(duration, burnVfx));
     }
 
     private IEnumerator PlayStatusVfxCo(float duration, Color effectColor)

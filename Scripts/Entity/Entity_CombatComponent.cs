@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class Entity_CombatComponent : MonoBehaviour
 {
-    private Entity_VFX vfx;
-    private EntityStats stat;
+    private Entity_VFX _vfx;
+    private EntityStats _stat;
     
     [Header("Target detection")]
     [SerializeField] private Transform targetCheck;
@@ -16,8 +16,8 @@ public class Entity_CombatComponent : MonoBehaviour
 
     private void Awake()
     {
-        vfx = GetComponent<Entity_VFX>();
-        stat = GetComponent<EntityStats>();
+        _vfx = GetComponent<Entity_VFX>();
+        _stat = GetComponent<EntityStats>();
     }
 
     public void PerformAttack()
@@ -28,8 +28,8 @@ public class Entity_CombatComponent : MonoBehaviour
 
             if (damagable == null) continue;
 
-            float elementalDamage = stat.GetElementalDamage(out ElementalType elemental);
-            float damage = stat.GetPhysicalDamage(out bool isCrit);
+            float elementalDamage = _stat.GetElementalDamage(out ElementalType elemental);
+            float damage = _stat.GetPhysicalDamage(out bool isCrit);
             bool targetGotHit = damagable.TakeDamage(damage, elementalDamage, elemental, transform);
             
             if(elemental != ElementalType.None)
@@ -37,13 +37,12 @@ public class Entity_CombatComponent : MonoBehaviour
             
             if (targetGotHit)
             {
-                vfx.UpdateOnHitColor(elemental);
-                vfx.CreateOnHitVFX(target.transform, isCrit);
+                _vfx.UpdateOnHitColor(elemental);
+                _vfx.CreateOnHitVFX(target.transform, isCrit);
             }
-                
         }
     }
-    public void ApplyStatusEffect(Transform target, ElementalType elemental)
+    public void ApplyStatusEffect(Transform target, ElementalType elemental, float scaleFactor = 1)
     {
         EntityStatusHandler statusHandler = target.GetComponent<EntityStatusHandler>();
 
@@ -51,8 +50,14 @@ public class Entity_CombatComponent : MonoBehaviour
             return;
         
         if (elemental == ElementalType.Ice && statusHandler.CanBeApplied(ElementalType.Ice))
-            statusHandler.ApplyChilledEffect(defaultDuration, chillSlowMultiplier);
-        
+            statusHandler.ApplyChilledEffect(defaultDuration, chillSlowMultiplier *  scaleFactor);
+
+        if (elemental == ElementalType.Fire && statusHandler.CanBeApplied(ElementalType.Fire))
+        {
+            float fireDamage = _stat.offence.fireDamage.GetValue() * scaleFactor;
+            statusHandler.ApplyBurnEffect(defaultDuration, fireDamage);
+        }
+
     }
 
     protected Collider2D[] GetDetectedColliders ()
