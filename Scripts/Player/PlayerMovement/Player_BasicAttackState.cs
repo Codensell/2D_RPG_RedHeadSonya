@@ -25,6 +25,7 @@ public class Player_BasicAttackState : PlayerState
 		
 		isComboAttackQueued = false;
         ResetComboIndexIfNeeded();
+        SyncAttackSpeed();
 
         attackDirection = player.moveInput.x != 0 ? ((int)player.moveInput.x) : player.facingDirection;
         

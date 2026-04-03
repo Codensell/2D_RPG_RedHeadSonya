@@ -4,7 +4,7 @@ using Random = UnityEngine.Random;
 
 public class EntityStats : MonoBehaviour
 {
-    public Stat maxHp;
+    public StatResourceGroup resources;
     public StatMajorGroup major;
     public StatOffenceGroup offence;
     public StatDefenceGroup defence;
@@ -117,7 +117,7 @@ public class EntityStats : MonoBehaviour
 
     public float GetMaxHealth()
     {
-        float baseMaxHealth = maxHp.GetValue();
+        float baseMaxHealth = resources.maxHealth.GetValue();
         float bonusMaxHealth = major.vitality.GetValue() * 5;
         
         float finalMaxHealth = baseMaxHealth + bonusMaxHealth;

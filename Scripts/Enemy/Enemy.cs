@@ -88,8 +88,10 @@ public class Enemy : Entity
 
     public RaycastHit2D PlayerDetection()
     {
+        Vector2 direction = Vector2.right *  facingDirection;
+        
         RaycastHit2D hit = 
-            Physics2D.Raycast(playerCheck.position, Vector2.right, playerCheckDistance, whoIsPlayer | whatIsGround);
+            Physics2D.Raycast(playerCheck.position, direction, playerCheckDistance, whoIsPlayer | whatIsGround);
         
         if(hit.collider == null || hit.collider.gameObject.layer != LayerMask.NameToLayer("Player"))
             return default;

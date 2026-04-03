@@ -4,6 +4,7 @@ using System;
 [Serializable]
 public class StatOffenceGroup
 {
+    public Stat attackSpeed;
     //Physical
     public Stat damage;
     public Stat critPower;
