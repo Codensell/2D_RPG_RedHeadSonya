@@ -4,6 +4,8 @@ using Random = UnityEngine.Random;
 
 public class EntityStats : MonoBehaviour
 {
+    public StatSetupSo defaultStatSetup;
+    
     public StatResourceGroup resources;
     public StatMajorGroup major;
     public StatOffenceGroup offence;
@@ -135,5 +137,70 @@ public class EntityStats : MonoBehaviour
         
         return finalEvasion;
     }
-    
+
+    public Stat GetsStatByType(StatType statType)
+    {
+        switch (statType)
+        {
+            case StatType.MaxHealth: return resources.maxHealth;
+            case StatType.HealthRegen: return resources.healthRegen;
+            
+            case StatType.Strength: return major.strength;
+            case StatType.Agility: return major.agility;
+            case StatType.Intelligence: return  major.intelligence;
+            case StatType.Vitality: return major.vitality;
+            
+            case StatType.AttackSpeed: return offence.attackSpeed;
+            case StatType.Damage: return offence.damage;
+            case StatType.CritChance: return offence.critChance;
+            case StatType.CritPower: return offence.critPower;
+            case StatType.ArmorReduction: return offence.armorReduction;
+            
+            case StatType.FireDamage: return offence.fireDamage;
+            case StatType.IceDamage: return offence.iceDamage;
+            case StatType.LightningDamage: return offence.lightningDamage;
+            
+            case StatType.Armor: return defence.armor;
+            case StatType.Evasion: return defence.evasion;
+            
+            case StatType.IceResistance: return defence.iceRes;
+            case StatType.FireResistance: return defence.fireRes;
+            case StatType.LightningResistance: return  defence.lightningRes;
+            
+            default: 
+                Debug.LogWarning($"Stat type {statType} not implemented yet.");
+                return null;
+        }
+    }
+
+    [ContextMenu("Update deefault setup")]
+    public void ApplyDefaultStatSetup()
+    {
+        if (defaultStatSetup == null) return;
+        
+        resources.maxHealth.SetBaseValue(defaultStatSetup.maxHealth);
+        resources.healthRegen.SetBaseValue(defaultStatSetup.healthRegen);
+        
+        major.strength.SetBaseValue(defaultStatSetup.strength);
+        major.agility.SetBaseValue(defaultStatSetup.agility);
+        major.intelligence.SetBaseValue(defaultStatSetup.intelligence);
+        major.vitality.SetBaseValue(defaultStatSetup.vitality);
+        
+        offence.damage.SetBaseValue(defaultStatSetup.damage);
+        offence.attackSpeed.SetBaseValue(defaultStatSetup.attackSpeed);
+        offence.critChance.SetBaseValue(defaultStatSetup.critChance);
+        offence.critPower.SetBaseValue(defaultStatSetup.critPower);
+        offence.armorReduction.SetBaseValue(defaultStatSetup.armorReduction);
+        
+        offence.fireDamage.SetBaseValue(defaultStatSetup.fireDamage);
+        offence.iceDamage.SetBaseValue(defaultStatSetup.iceDamage);
+        offence.lightningDamage.SetBaseValue(defaultStatSetup.lightningDamage);
+        
+        defence.armor.SetBaseValue(defaultStatSetup.armor);
+        defence.evasion.SetBaseValue(defaultStatSetup.evasion);
+        
+        defence.fireRes.SetBaseValue(defaultStatSetup.fireResistance);
+        defence.lightningRes.SetBaseValue(defaultStatSetup.lightningResistance);
+        defence.iceRes.SetBaseValue(defaultStatSetup.iceResistance);
+    }
 }
