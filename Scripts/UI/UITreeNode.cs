@@ -51,14 +51,14 @@ public class UITreeNode : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _ui.uiToolTip.ShowToolTip(true, _rect);
+        _ui.uiSkillToolTip.ShowToolTip(true, _rect, skillData);
         if(isUnlocked == false)
             UpdateIconColor(Color.white * .9f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _ui.uiToolTip.ShowToolTip(false, _rect);
+        _ui.uiSkillToolTip.ShowToolTip(false, _rect);
         if(isUnlocked ==  false)
             UpdateIconColor(_lastColor);
     }

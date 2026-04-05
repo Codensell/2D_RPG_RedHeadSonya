@@ -11,7 +11,7 @@ public class UIToolTip : MonoBehaviour
         _rect = GetComponent<RectTransform>();
     }
 
-    public void ShowToolTip(bool show, RectTransform targetRect)
+    public virtual void ShowToolTip(bool show, RectTransform targetRect)
     {
         if (show == false)
         {
