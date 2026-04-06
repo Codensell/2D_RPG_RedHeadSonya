@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class UITreeConnection : MonoBehaviour
 {
-    [SerializeField] private RectTransform connectionPoint;
+    [SerializeField] private RectTransform rotationPoint;
     [SerializeField] private RectTransform connectionLength;
+    [SerializeField] private RectTransform childNodeConnectionPoint;
 
     public void DirectionConnection(NodeDirectionType direction, float length)
     {
@@ -11,8 +12,20 @@ public class UITreeConnection : MonoBehaviour
         float finalLength = beActive ? length : 0;
         float angle = GetDirectionAngle(direction);
         
-        connectionPoint.localRotation = Quaternion.Euler(0, 0, angle);
+        rotationPoint.localRotation = Quaternion.Euler(0, 0, angle);
         connectionLength.sizeDelta = new Vector2(finalLength, connectionLength.sizeDelta.y);
+    }
+
+    public Vector2 GetConnectionPoint(RectTransform rect)
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle
+        (
+            rect.parent as RectTransform,
+            childNodeConnectionPoint.position,
+            null,
+            out var localPosition
+        );
+        return localPosition;
     }
     
     private float GetDirectionAngle(NodeDirectionType nodeDirectionType)
