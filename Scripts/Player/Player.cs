@@ -5,9 +5,13 @@ using System;
 public class Player : Entity
 {
     public static event Action OnPlayerDeath;
-
     private UI _ui;
+    
     public PlayerInputSet input {get; private set;}
+    public PlayerSkillManager skillManager {get; private set;}
+    public PlayerVFX vfx {get; private set;}
+    
+    #region State Variables
     public Player_IdleState idleState {get; private set;}
     public Player_MoveState moveState {get; private set;}
     public Player_JumpState jumpState {get; private set;}
@@ -18,6 +22,7 @@ public class Player : Entity
     public Player_BasicAttackState basicAttackState {get; private set;}
     public Player_JumpAttackState jumpAttackState {get; private set;}
     public Player_DeadState deadState {get; private set;}
+    #endregion
     
     public Player_CounterAttackState counterAttackState {get; private set;}
     
@@ -50,6 +55,8 @@ public class Player : Entity
         
         _ui = FindAnyObjectByType<UI>();
         input = new PlayerInputSet();
+        skillManager = GetComponent<PlayerSkillManager>();
+        vfx = GetComponent<PlayerVFX>();
         
         idleState = new Player_IdleState(this, stateMachine, "idle");
         moveState = new Player_MoveState(this, stateMachine, "move");

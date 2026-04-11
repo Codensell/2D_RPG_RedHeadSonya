@@ -5,6 +5,12 @@ public class UISkillTree : MonoBehaviour
 {
     [SerializeField] public int skillPoints;
     [SerializeField] private UITreeConnectionHandler[] parentNodes;
+    public PlayerSkillManager skillManager { get; private set; }
+
+    private void Awake()
+    {
+        skillManager = FindAnyObjectByType<PlayerSkillManager>();
+    }
 
     private void Start()
     {

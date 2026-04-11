@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Entity_VFX : MonoBehaviour
 {
-    private SpriteRenderer _sr;
+    protected SpriteRenderer sr;
     private Entity _entity;
     
     [Header("VFX")] 
@@ -26,8 +26,8 @@ public class Entity_VFX : MonoBehaviour
     private void Awake()
     {
         _entity = GetComponent<Entity>();
-        _sr = GetComponentInChildren<SpriteRenderer>();
-        _originalMaterial = _sr.material;
+        sr = GetComponentInChildren<SpriteRenderer>();
+        _originalMaterial = sr.material;
         _originalHitVfxColor = hitVfxColor;
     }
 
@@ -41,8 +41,8 @@ public class Entity_VFX : MonoBehaviour
     public void StopAllVfx()
     {
         StopAllCoroutines();
-        _sr.color = Color.white;
-        _sr.material = _originalMaterial;
+        sr.color = Color.white;
+        sr.material = _originalMaterial;
     }
 
     private IEnumerator PlayStatusVfxCo(float duration, Color effectColor)
@@ -57,14 +57,14 @@ public class Entity_VFX : MonoBehaviour
 
         while (timePassed < duration)
         {
-            _sr.color = toggle ? lightColor : darkColor;
+            sr.color = toggle ? lightColor : darkColor;
             toggle = !toggle;
             
             yield return new WaitForSeconds(tickInterval);
             timePassed += tickInterval;
         }
         
-        _sr.color = Color.white;
+        sr.color = Color.white;
     }
 
     public void CreateOnHitVFX(Transform target, bool isCrit)
@@ -96,9 +96,9 @@ public class Entity_VFX : MonoBehaviour
 
     private IEnumerator OnDamageVfxCo()
     {
-        _sr.material = onDamageMaterial;
+        sr.material = onDamageMaterial;
         yield return new WaitForSeconds(onDamageVfxDuration);
-        _sr.material = _originalMaterial;
+        sr.material = _originalMaterial;
     }
     
 }
