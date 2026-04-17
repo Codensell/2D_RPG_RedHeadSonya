@@ -3,10 +3,12 @@ using UnityEngine;
 public class PlayerSkillManager : MonoBehaviour
 {
     public SkillDash dash { get; private set; }
+    public SkillShard shard { get; private set; }
 
     private void Awake()
     {
         dash = GetComponentInChildren<SkillDash>();
+        shard = GetComponentInChildren<SkillShard>();
     }
 
     public SkillBase GetSkillByType(SkillType type)
